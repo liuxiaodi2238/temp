@@ -1,0 +1,18 @@
+transcript on
+if {[file exists rtl_work]} {
+	vdel -lib rtl_work -all
+}
+vlib rtl_work
+vmap work rtl_work
+
+vlog -vlog01compat -work work +incdir+F:/data/temp/task/rtl {F:/data/temp/task/rtl/task.v}
+vlog -vlog01compat -work work +incdir+F:/data/temp/task/prj/ip {F:/data/temp/task/prj/ip/FIFO_ip.v}
+
+vlog -vlog01compat -work work +incdir+F:/data/temp/task/prj/../tb {F:/data/temp/task/prj/../tb/tb_task1.vt}
+
+vsim -t 1ps -L altera_ver -L lpm_ver -L sgate_ver -L altera_mf_ver -L altera_lnsim_ver -L cycloneive_ver -L rtl_work -L work -voptargs="+acc"  tb_task1_vlg_tst
+
+add wave *
+view structure
+view signals
+run -all
